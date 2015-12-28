@@ -5,7 +5,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -36,7 +35,7 @@ public class Box2dSenserLogic {
 
 				float x = se.values[SensorManager.DATA_X];
 				float y = se.values[SensorManager.DATA_Y];
-				Log.d(TAG, "x:" + x + ",y:" + y);
+//				Log.d(TAG, "x:" + x + ",y:" + y);
 
 				float xSenser = -5.0f * x;
 				float ySenser = (y >= -1) ? -30 : -y * 5.0f - 20f;
