@@ -35,7 +35,7 @@ import alex.com.box2ddemo.gift2dview.Tools.GiftParticleContants;
 @SuppressWarnings("All")
 public class Box2DFragment extends AndroidFragmentApplication implements InputProcessor {
 
-    private static final String TAG = "GiftParticleFragment";
+    private static final String TAG = "Box2DFragment";
     private View m_viewRooter = null;
     //粒子效果UI容器层
     private LinearLayout mContainer;
