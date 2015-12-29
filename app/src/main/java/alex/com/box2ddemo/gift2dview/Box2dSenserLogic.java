@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -37,9 +38,30 @@ public class Box2dSenserLogic {
 				float y = se.values[SensorManager.DATA_Y];
 //				Log.d(TAG, "x:" + x + ",y:" + y);
 
-				float xSenser = -5.0f * x;
-				float ySenser = (y >= -1) ? -30 : -y * 5.0f - 20f;
-				Vector2 vec2 = m_isPortrait ? new Vector2(xSenser, ySenser) : new Vector2(0, xSenser);
+				float xSenser, ySenser;
+				if (m_isPortrait) {
+					xSenser = -5.0f * x;
+					ySenser = (y >= -1) ? -30 : -y * 5.0f;
+
+					if (y<0){
+						xSenser = -1 * xSenser;
+						ySenser = -1 * ySenser;
+					}
+
+				}
+				else{
+					xSenser = 5.0f * y;
+					ySenser = (x >= -1) ? -30 : -x * 5.0f;
+
+					if (x<0) {
+						xSenser = -1 * xSenser;
+						ySenser = -1 * ySenser;
+					}
+				}
+
+
+
+				Vector2 vec2 = m_isPortrait ? new Vector2(xSenser, ySenser) : new Vector2(xSenser, ySenser);
 				if (world != null)
 					world.setGravity(vec2);
 			}
