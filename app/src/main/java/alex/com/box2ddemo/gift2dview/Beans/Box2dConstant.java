@@ -10,6 +10,6 @@ public class Box2dConstant {
 
 	public static final int MaxBallCounter = 80;
 	public static final float MaxBallLifer = 5f;
-	public static final float MaxBallLiferSP = MaxBallLifer - 0.3f;
+	public static final float MaxBallLiferSP = MaxBallLifer - 0.4f;
 
 }

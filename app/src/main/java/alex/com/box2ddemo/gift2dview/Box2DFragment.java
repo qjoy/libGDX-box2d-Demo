@@ -77,8 +77,11 @@ public class Box2DFragment extends AndroidFragmentApplication implements InputPr
     @Override
     public void onConfigurationChanged(Configuration config) {
         super.onConfigurationChanged(config);
-        cleanGDX();
+
+	    cleanGDX();
         buildGDX();
+
+	    box2dEffectView.setIsPortrait(config.orientation == Configuration.ORIENTATION_PORTRAIT);
     }
 
     public void addBall(boolean isleft){
@@ -113,6 +116,10 @@ public class Box2DFragment extends AndroidFragmentApplication implements InputPr
             Gdx.input.setInputProcessor(this);
             Gdx.input.setCatchBackKey(true);
         }
+    }
+
+    public void openDebugRenderer(boolean open){
+        box2dEffectView.openDebugRenderer(open);
     }
 
     @Override

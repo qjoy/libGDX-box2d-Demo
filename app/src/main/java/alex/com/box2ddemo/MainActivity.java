@@ -6,10 +6,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,11 +23,13 @@ import com.badoo.mobile.util.WeakHandler;
 
 import alex.com.box2ddemo.gift2dview.Box2DFragment;
 import alex.com.box2ddemo.gift2dview.Tools.GiftParticleContants;
+import alex.com.box2ddemo.gift2dview.Tools.ScreenParamUtil;
 import alex.com.box2ddemo.testcode.HalfScreenActivity;
 import alex.com.box2ddemo.testcode.NormalActivity;
 import alex.com.box2ddemo.testcode.SpringEffect;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 
 public class MainActivity extends FragmentActivity implements AndroidFragmentApplication.Callbacks{
 
@@ -36,6 +42,10 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
 
     @Bind(R.id.random)
     public Button m_random;
+
+	@Bind(R.id.lyt_container)
+	public LinearLayout m_container;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +60,10 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
         filter1.addAction(GiftParticleContants.BROADCAST_GIFTPARTICLE_BACKKEY);
         registerReceiver(m_systemreceiveBroadCast, filter1);
 
-        m_box2dFgm = (Box2DFragment) getSupportFragmentManager().findFragmentById(R.id.libgdxFrag);
+        m_box2dFgm = new Box2DFragment();
+	    getSupportFragmentManager().beginTransaction().add(R.id.lyt_container, m_box2dFgm).commit();
+
+	    showBox2dFgmNormalScreen();
 
         m_scrollv = (ScrollView) findViewById(R.id.scrollv);
         m_tvLog = (TextView) findViewById(R.id.log);
@@ -200,4 +213,39 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
         }
     }
 
+    @OnCheckedChanged(R.id.cb_isdebug)
+    public void OnIsDebugCheckedChanged(CompoundButton btn, boolean bchecked){
+        if (btn.getId() == R.id.cb_isdebug){
+            m_box2dFgm.openDebugRenderer(bchecked);
+            btn.setText(bchecked?"Close DebugDraw":"Open DebugDraw");
+        }
+    }
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+
+		if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
+			showBox2dFgmFullScreen();
+		}
+		else{
+			showBox2dFgmNormalScreen();
+		}
+	}
+
+	private void showBox2dFgmFullScreen(){
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)m_container.getLayoutParams();
+		params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+		params.height = RelativeLayout.LayoutParams.MATCH_PARENT;
+		m_container.setLayoutParams(params);
+	}
+
+	private void showBox2dFgmNormalScreen(){
+		int width = ScreenParamUtil.GetScreenWidthPx(this);
+		int height = width*3/4;
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)m_container.getLayoutParams();
+		params.width = width;
+		params.height = height;
+		m_container.setLayoutParams(params);
+	}
 }

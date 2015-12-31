@@ -40,10 +40,9 @@ public class Box2dEffectView implements ApplicationListener {
     private Context m_context;
     private List<Body> m_ballBodys = new ArrayList<>();
     private SpriteBatch m_spriteBatch;
+    private boolean m_isDebugRenderer;
 
     Texture TESTTEXTURE;
-
-    private boolean m_island = false;
 
     public Box2dEffectView(Context context) {
         m_context = context;
@@ -90,20 +89,16 @@ public class Box2dEffectView implements ApplicationListener {
 //            Log.d(TAG, "deltatm:" + deltatm);
             _ballUpdatasLogic(deltatm);
 
-            m_debugRenderer.render(world, camera.combined);
+            if (m_isDebugRenderer)
+                m_debugRenderer.render(world, camera.combined);
         }
     }
 
     @Override
     public void resize(int width, int height) {
 
-        if (width > height)
-            m_island = true;
-        else
-            m_island = false;
-
-        m_box2dSenserLogic.setIsPortrait(!m_island);
     }
+
 
     @Override
     public void pause() {
@@ -112,6 +107,10 @@ public class Box2dEffectView implements ApplicationListener {
     @Override
     public void resume() {
     }
+
+	public void setIsPortrait(boolean isPortrait){
+		m_box2dSenserLogic.setIsPortrait(isPortrait);
+	}
 
     public void addball(boolean isleft) {
 
@@ -155,7 +154,7 @@ public class Box2dEffectView implements ApplicationListener {
 
     private void addground(){
         BodyDef groundBodyDef =new BodyDef();
-        groundBodyDef.position.set(new Vector2(0, -camera.viewportHeight/2 + 6f));
+        groundBodyDef.position.set(new Vector2(0, -camera.viewportHeight/2));
         Body groundBody = world.createBody(groundBodyDef);
         PolygonShape groundBox = new PolygonShape();
         groundBox.setAsBox(camera.viewportWidth, 1.0f / PXTM);
@@ -165,7 +164,7 @@ public class Box2dEffectView implements ApplicationListener {
 
     private void addleftwall(){
         BodyDef groundBodyDef =new BodyDef();
-        groundBodyDef.position.set(new Vector2(-camera.viewportWidth/2, 6f));
+        groundBodyDef.position.set(new Vector2(-camera.viewportWidth/2, 0f));
         Body groundBody = world.createBody(groundBodyDef);
         PolygonShape groundBox = new PolygonShape();
         groundBox.setAsBox(1.0f / PXTM, camera.viewportHeight);
@@ -175,7 +174,7 @@ public class Box2dEffectView implements ApplicationListener {
 
     private void addrighttwall(){
         BodyDef groundBodyDef =new BodyDef();
-        groundBodyDef.position.set(new Vector2(camera.viewportWidth/2, 6f));
+        groundBodyDef.position.set(new Vector2(camera.viewportWidth/2, 0f));
         Body groundBody = world.createBody(groundBodyDef);
         PolygonShape groundBox = new PolygonShape();
         groundBox.setAsBox(1.0f / PXTM, camera.viewportHeight);
@@ -228,7 +227,7 @@ public class Box2dEffectView implements ApplicationListener {
     private float hidesmallBody( int indexofbodys){
         BallInfo ballInfo = (BallInfo)m_ballBodys.get(indexofbodys).getUserData();
         float als = ballInfo.getAplhascale();
-        als = als - 0.08f;
+        als = als - 0.02f;
         if (als <= 0)
             return 0;
         ballInfo.setAplhascale(als);
@@ -244,4 +243,7 @@ public class Box2dEffectView implements ApplicationListener {
         }
     }
 
+    public void openDebugRenderer(boolean debugRenderer) {
+        m_isDebugRenderer = debugRenderer;
+    }
 }
