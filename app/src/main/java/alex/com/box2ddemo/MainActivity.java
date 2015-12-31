@@ -12,7 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -44,7 +44,7 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
     public Button m_random;
 
 	@Bind(R.id.lyt_container)
-	public LinearLayout m_container;
+	public FrameLayout m_container;
 
 
     @Override

@@ -80,8 +80,6 @@ public class Box2DFragment extends AndroidFragmentApplication implements InputPr
 
 	    cleanGDX();
         buildGDX();
-
-	    box2dEffectView.setIsPortrait(config.orientation == Configuration.ORIENTATION_PORTRAIT);
     }
 
     public void addBall(boolean isleft){

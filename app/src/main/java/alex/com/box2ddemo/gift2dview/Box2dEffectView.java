@@ -1,6 +1,7 @@
 package alex.com.box2ddemo.gift2dview;
 
 import android.content.Context;
+import android.content.res.Configuration;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -96,7 +97,10 @@ public class Box2dEffectView implements ApplicationListener {
 
     @Override
     public void resize(int width, int height) {
+	    Configuration mConfiguration = m_context.getResources().getConfiguration(); //获取设置的配置信息
+	    int ori = mConfiguration.orientation ; //获取屏幕方向
 
+	    setIsPortrait(ori == Configuration.ORIENTATION_PORTRAIT);
     }
 
 
@@ -108,8 +112,9 @@ public class Box2dEffectView implements ApplicationListener {
     public void resume() {
     }
 
-	public void setIsPortrait(boolean isPortrait){
-		m_box2dSenserLogic.setIsPortrait(isPortrait);
+	private void setIsPortrait(boolean isPortrait){
+		if (m_box2dSenserLogic != null)
+			m_box2dSenserLogic.setIsPortrait(isPortrait);
 	}
 
     public void addball(boolean isleft) {
@@ -121,7 +126,7 @@ public class Box2dEffectView implements ApplicationListener {
             BodyDef BallBodydef = new BodyDef();
             BallBodydef.type = BodyDef.BodyType.DynamicBody;
 
-            float thrownXRandom = (float) Math.random() * 20.0f + 10.0f;
+            float thrownXRandom = (float) Math.random() * 26.0f + 4.0f;
             float thrownYRandom = -( (float) Math.random() * 15.0f + 3.0f );
             if (isleft) {
                 BallBodydef.linearVelocity.set(thrownXRandom, thrownYRandom);

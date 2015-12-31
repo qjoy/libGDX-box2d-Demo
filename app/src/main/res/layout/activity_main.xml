@@ -2,14 +2,22 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/floralwhite"
+                android:background="@color/aliceblue"
                 tools:context=".MainActivity">
 
-	<LinearLayout
+	<FrameLayout
 		android:id="@+id/lyt_container"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:orientation="horizontal"/>
+		android:orientation="horizontal"
+		>
+		<ImageView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+		    android:src="@mipmap/bkg"
+		    android:scaleType="centerCrop"
+			/>
+	</FrameLayout>
 
 	<ScrollView
 		android:id="@+id/scrollv"
@@ -32,9 +40,95 @@
 
 
 	<LinearLayout
+		android:id="@+id/lyt_addcontainer"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_margin="5dp"
+		android:background="@drawable/particledashsharp"
+		android:gravity="center"
+		android:orientation="vertical"
+		android:padding="10dp"
+		>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="5dp"
+			android:layout_marginLeft="10dp"
+			android:text="send star"
+			android:textColor="@color/cornflowerblue"
+			/>
+		<LinearLayout android:layout_width="match_parent"
+		              android:layout_height="wrap_content">
+			<CheckBox
+				android:id="@+id/cb_isdebug"
+				style="@style/CustomCheckboxTheme"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="left|center_vertical"
+				android:layout_margin="6dp"
+				android:layout_weight="1"
+				android:padding="6dp"
+				android:text="Open DebugDraw"
+				android:textColor="@color/word_dark"
+				android:textSize="12dp"
+				/>
+
+			<Button
+				android:id="@+id/random"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="right|center_vertical"
+				android:layout_margin="6dp"
+				android:layout_weight="1"
+				android:background="@drawable/particlestylescrazymodebtnsharp"
+				android:padding="6dp"
+				android:text="Start crazyMode"
+				android:textColor="@color/white"
+				android:textSize="12dp"
+				/>
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			>
+
+			<Button
+				android:id="@+id/add1"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_margin="6dp"
+				android:layout_weight="1"
+				android:background="@drawable/paticlestylebtnsharp"
+				android:padding="6dp"
+				android:text="send left"
+				android:textColor="@color/word_dark"
+				android:textSize="12dp"
+				/>
+
+			<Button
+				android:id="@+id/add2"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_margin="6dp"
+				android:layout_weight="1"
+				android:background="@drawable/paticlestylebtnsharp"
+				android:padding="6dp"
+				android:text="send right"
+				android:textColor="@color/word_dark"
+				android:textSize="12dp"
+				/>
+
+		</LinearLayout>
+	</LinearLayout>
+
+	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="140dp"
-		android:layout_centerInParent="true"
+		android:layout_above="@id/lyt_addcontainer"
 		android:layout_margin="5dp"
 		android:background="@drawable/interuptdashsharp"
 		android:gravity="center"
@@ -96,90 +190,4 @@
 		</LinearLayout>
 
 	</LinearLayout>
-
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		android:layout_margin="5dp"
-		android:background="@drawable/particledashsharp"
-		android:gravity="center"
-		android:orientation="vertical"
-		android:padding="10dp"
-		>
-
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="5dp"
-			android:layout_marginLeft="10dp"
-			android:text="send star"
-			android:textColor="@color/cornflowerblue"
-			/>
-		<LinearLayout android:layout_width="match_parent"
-		              android:layout_height="wrap_content">
-			<CheckBox
-				android:id="@+id/cb_isdebug"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="left|center_vertical"
-				android:layout_margin="6dp"
-				android:layout_weight="1"
-				android:padding="6dp"
-				style="@style/CustomCheckboxTheme"
-				android:text="Open DebugDraw"
-				android:textColor="@color/word_dark"
-				android:textSize="12dp"
-				/>
-
-			<Button
-				android:id="@+id/random"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="right|center_vertical"
-				android:layout_margin="6dp"
-				android:layout_weight="1"
-				android:background="@drawable/particlestylescrazymodebtnsharp"
-				android:padding="6dp"
-				android:text="Start crazyMode"
-				android:textColor="@color/white"
-				android:textSize="12dp"
-				/>
-		</LinearLayout>
-
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			>
-
-			<Button
-				android:id="@+id/add1"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_margin="6dp"
-				android:layout_weight="1"
-				android:background="@drawable/paticlestylebtnsharp"
-				android:padding="6dp"
-				android:text="send left"
-				android:textColor="@color/word_dark"
-				android:textSize="12dp"
-				/>
-
-			<Button
-				android:id="@+id/add2"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_margin="6dp"
-				android:layout_weight="1"
-				android:background="@drawable/paticlestylebtnsharp"
-				android:padding="6dp"
-				android:text="send right"
-				android:textColor="@color/word_dark"
-				android:textSize="12dp"
-				/>
-
-		</LinearLayout>
-	</LinearLayout>
-
 </RelativeLayout>
