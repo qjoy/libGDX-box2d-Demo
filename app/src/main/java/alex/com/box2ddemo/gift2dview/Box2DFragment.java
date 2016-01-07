@@ -74,7 +74,13 @@ public class Box2DFragment extends AndroidFragmentApplication implements InputPr
         return m_viewRooter;
     }
 
-    @Override
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		box2dEffectView.release();
+	}
+
+	@Override
     public void onConfigurationChanged(Configuration config) {
         super.onConfigurationChanged(config);
 

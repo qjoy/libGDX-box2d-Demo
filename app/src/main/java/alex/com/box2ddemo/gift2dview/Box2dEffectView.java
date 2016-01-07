@@ -49,6 +49,8 @@ public class Box2dEffectView implements ApplicationListener {
         m_context = context;
     }
 
+
+	public void release(){m_box2dSenserLogic.release();}
     @Override
     public void create() {
         float w = Gdx.graphics.getWidth();
@@ -73,7 +75,7 @@ public class Box2dEffectView implements ApplicationListener {
 
     @Override
     public void dispose() {
-        m_box2dSenserLogic.release();
+
     }
 
     @Override
