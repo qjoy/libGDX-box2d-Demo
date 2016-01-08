@@ -17,7 +17,7 @@ import android.view.View;
  * @Description: 水平仪
  */
 
-public class LevelGaugeView extends View{
+public class levelgaugeView extends View{
 
 	private SensorEventListener sel;
 	private SensorManager sm;
@@ -33,12 +33,12 @@ public class LevelGaugeView extends View{
 	Paint m_paint0 = new Paint();
 	Paint m_paint1 = new Paint();
 
-	public LevelGaugeView(Context context) {
+	public levelgaugeView(Context context) {
 		super(context);
 		init();
 	}
 
-	public LevelGaugeView(Context context, AttributeSet attrs) {
+	public levelgaugeView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
 	}

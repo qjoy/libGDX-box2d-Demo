@@ -26,7 +26,7 @@ import alex.com.box2ddemo.gift2dview.Box2DFragment;
 import alex.com.box2ddemo.gift2dview.Tools.GiftParticleContants;
 import alex.com.box2ddemo.gift2dview.Tools.ScreenParamUtil;
 import alex.com.box2ddemo.testcode.HalfScreenActivity;
-import alex.com.box2ddemo.testcode.LevelGaugeView;
+import alex.com.box2ddemo.testcode.levelgaugeView;
 import alex.com.box2ddemo.testcode.NormalActivity;
 import alex.com.box2ddemo.testcode.SpringEffect;
 import butterknife.Bind;
@@ -49,7 +49,7 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
 	public FrameLayout m_container;
 
 	@Bind(R.id.levelgauge)
-	public LevelGaugeView m_levelgaugeView;
+	public levelgaugeView m_levelgaugeView;
 
 
     @Override

@@ -191,7 +191,7 @@
 
 	</LinearLayout>
 
-	<alex.com.box2ddemo.testcode.LevelGaugeView
+	<alex.com.box2ddemo.testcode.levelgaugeView
 		android:id="@+id/levelgauge"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"/>
