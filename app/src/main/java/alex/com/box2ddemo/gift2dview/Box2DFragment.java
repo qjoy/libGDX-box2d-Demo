@@ -35,44 +35,44 @@ import alex.com.box2ddemo.gift2dview.Tools.GiftParticleContants;
 @SuppressWarnings("All")
 public class Box2DFragment extends AndroidFragmentApplication implements InputProcessor {
 
-    private static final String TAG = "Box2DFragment";
-    private View m_viewRooter = null;
-    //粒子效果UI容器层
-    private LinearLayout mContainer;
-    //粒子效果绘制层
-    private Box2dEffectView box2dEffectView;
-    //Fragment 处于销毁过程中标志位
-    private boolean m_isDestorying = false;
-    //Fragment 处于OnStop标志位
-    private boolean m_isStoping = false;
-    //Screen 是否需要重建播放
-    private boolean m_isNeedBuild =true;
+	private static final String TAG = "Box2DFragment";
+	private View m_viewRooter = null;
+	//粒子效果UI容器层
+	private LinearLayout mContainer;
+	//粒子效果绘制层
+	private Box2dEffectView box2dEffectView;
+	//Fragment 处于销毁过程中标志位
+	private boolean m_isDestorying = false;
+	//Fragment 处于OnStop标志位
+	private boolean m_isStoping = false;
+	//Screen 是否需要重建播放
+	private boolean m_isNeedBuild = true;
 
-    private WeakHandler mHandler = new WeakHandler();
-    //是否已被清除
-    private boolean m_cleaned = false;
+	private WeakHandler mHandler = new WeakHandler();
+	//是否已被清除
+	private boolean m_cleaned = false;
 
-    PowerManager pm;
+	PowerManager pm;
 
-    public void preDestory(){
-        m_isDestorying = true;
-    }
+	public void preDestory() {
+		m_isDestorying = true;
+	}
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable
+	@Override
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        m_viewRooter = inflater.inflate(R.layout.lf_layout_giftparticle, null);
-        pm = (PowerManager) getActivity().getSystemService(Context.POWER_SERVICE);
+		m_viewRooter = inflater.inflate(R.layout.lf_layout_giftparticle, null);
+		pm = (PowerManager) getActivity().getSystemService(Context.POWER_SERVICE);
 
+		return m_viewRooter;
+	}
 
-        buildGDX();
-
-        Gdx.input.setInputProcessor(this);
-        Gdx.input.setCatchBackKey(true);
-
-        return m_viewRooter;
-    }
+	@Override
+	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		buildGDX();
+	}
 
 	@Override
 	public void onDestroyView() {
@@ -81,172 +81,153 @@ public class Box2DFragment extends AndroidFragmentApplication implements InputPr
 	}
 
 	@Override
-    public void onConfigurationChanged(Configuration config) {
-        super.onConfigurationChanged(config);
+	public void onConfigurationChanged(Configuration config) {
+		super.onConfigurationChanged(config);
 
-	    cleanGDX();
-        buildGDX();
-    }
+		cleanGDX();
+		buildGDX();
+	}
 
-    public void addBall(boolean isleft){
-        try {
-            box2dEffectView.addball(isleft);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+	public void addBall(boolean isleft) {
+		try {
+			box2dEffectView.addball(isleft);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    public void cleanGDX(){
-        if (mContainer.getChildCount() > 0) {
-            Log.d(TAG, "cleanGDX");
-            mContainer.removeAllViews();
-            m_cleaned = true;
-        }
-    }
+	public void cleanGDX() {
+		try {
+			box2dEffectView.dispose();
+		}catch (Exception e){}
+		mContainer.removeAllViews();
+		box2dEffectView = null;
+	}
 
-    public void buildGDX(){
-        if (m_isDestorying)
-            return;
+	public void buildGDX() {
+		box2dEffectView = new Box2dEffectView(getActivity());
+		View effectview = CreateGLAlpha(box2dEffectView);
+		mContainer = (LinearLayout) m_viewRooter.findViewById(R.id.container);
+		mContainer.addView(effectview);
+		Gdx.input.setInputProcessor(this);
+		Gdx.input.setCatchBackKey(true);
+	}
 
-        if (mContainer == null)
-            mContainer = (LinearLayout) m_viewRooter.findViewById(R.id.container);
+	public void openDebugRenderer(boolean open) {
+		box2dEffectView.openDebugRenderer(open);
+	}
 
-        if ( mContainer.getChildCount() <= 0 ) {
-            Log.d(TAG, "buildGDX");
-            m_cleaned = false;
-            box2dEffectView = new Box2dEffectView(getActivity());
-            View effectview = CreateGLAlpha(box2dEffectView);
-            mContainer.addView(effectview);
-            Gdx.input.setInputProcessor(this);
-            Gdx.input.setCatchBackKey(true);
-        }
-    }
+	@Override
+	public void onStart() {
+		Log.d(TAG, "onStart");
 
-    public void openDebugRenderer(boolean open){
-        box2dEffectView.openDebugRenderer(open);
-    }
+		box2dEffectView.setCanDraw(true);
+		super.onStart();
 
-    @Override
-    public void onStart() {
-        Log.d(TAG, "onStart");
+	}
 
-        m_isStoping = false;
+	@Override
+	public void onStop() {
+		Log.d(TAG, "onStop");
 
-        if (m_isNeedBuild)
-            buildGDX();
+		box2dEffectView.setCanDraw(false);
+		super.onStop();
+	}
 
-        super.onStart();
-        isScreenLock();
-    }
+	@Override
+	public void onResume() {
+		Log.d(TAG, "onResume");
+		try {
+			super.onResume();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    @Override
-    public void onStop() {
-        Log.d(TAG, "onStop");
+	@Override
+	public void onPause() {
+		Log.d(TAG, "onPause");
 
-        m_isStoping = true;
-        if (!isScreenLock()) {
-            cleanGDX();
-            m_isNeedBuild = true;
-        }
-        else
-        {
-            m_isNeedBuild = false;
-        }
-        super.onStop();
-    }
+		try {
+			super.onPause();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-    @Override
-    public void onResume() {
-        Log.d(TAG, "onResume");
-        try {
-            super.onResume();
-        }
-        catch (Exception e){e.printStackTrace();}
-    }
+		if (mContainer != null && mContainer.getChildCount() <= 0)
+			return;
 
-    @Override
-    public void onPause() {
-        Log.d(TAG, "onPause");
+		if (!m_isDestorying && !isScreenLock())
+			super.onResume();
+	}
 
-        try {
-            super.onPause();
-        }
-        catch (Exception e){e.printStackTrace();}
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private View CreateGLAlpha(ApplicationListener application) {
+		//	    GLSurfaceView透明相关
+		AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
+		cfg.r = cfg.g = cfg.b = cfg.a = 8;
 
-        if (mContainer != null && mContainer.getChildCount() <= 0)
-            return;
+		View view = initializeForView(application, cfg);
 
-        if (!m_isDestorying && !isScreenLock())
-            super.onResume();
-    }
+		if (view instanceof SurfaceView) {
+			GLSurfaceView glView = (GLSurfaceView) graphics.getView();
+			glView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+			glView.setZOrderMediaOverlay(true);
+			glView.setZOrderOnTop(true);
+		}
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private View CreateGLAlpha(ApplicationListener application) {
-        //	    GLSurfaceView透明相关
-        AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
-        cfg.r = cfg.g = cfg.b = cfg.a = 8;
+		return view;
+	}
 
-        View view = initializeForView(application, cfg);
+	@Override
+	public boolean keyDown(int i) {
+		if (i == Input.Keys.BACK) {
+			Intent intent = new Intent();
+			intent.setAction(GiftParticleContants.BROADCAST_GIFTPARTICLE_BACKKEY);
+			getActivity().sendBroadcast(intent);
+			return true;
+		}
+		return false;
+	}
 
-        if (view instanceof SurfaceView) {
-            GLSurfaceView glView = (GLSurfaceView) graphics.getView();
-            glView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-            glView.setZOrderMediaOverlay(true);
-            glView.setZOrderOnTop(true);
-        }
+	@Override
+	public boolean keyUp(int i) {
+		return false;
+	}
 
-        return view;
-    }
+	@Override
+	public boolean keyTyped(char c) {
+		return false;
+	}
 
-    @Override
-    public boolean keyDown(int i) {
-        if (i == Input.Keys.BACK) {
-            Intent intent = new Intent();
-            intent.setAction(GiftParticleContants.BROADCAST_GIFTPARTICLE_BACKKEY);
-            getActivity().sendBroadcast(intent);
-            return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean touchDown(int i, int i1, int i2, int i3) {
+		return false;
+	}
 
-    @Override
-    public boolean keyUp(int i) {
-        return false;
-    }
+	@Override
+	public boolean touchUp(int i, int i1, int i2, int i3) {
+		return false;
+	}
 
-    @Override
-    public boolean keyTyped(char c) {
-        return false;
-    }
+	@Override
+	public boolean touchDragged(int i, int i1, int i2) {
+		return false;
+	}
 
-    @Override
-    public boolean touchDown(int i, int i1, int i2, int i3) {
-        return false;
-    }
+	@Override
+	public boolean mouseMoved(int i, int i1) {
+		return false;
+	}
 
-    @Override
-    public boolean touchUp(int i, int i1, int i2, int i3) {
-        return false;
-    }
+	@Override
+	public boolean scrolled(int i) {
+		return false;
+	}
 
-    @Override
-    public boolean touchDragged(int i, int i1, int i2) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int i, int i1) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int i) {
-        return false;
-    }
-
-    private boolean isScreenLock(){
-        boolean isScreenOn = pm.isScreenOn();//如果为true，则表示屏幕“亮”了，否则屏幕“暗”了。
+	private boolean isScreenLock() {
+		boolean isScreenOn = pm.isScreenOn();//如果为true，则表示屏幕“亮”了，否则屏幕“暗”了。
 //        Log.d(TAG, "isScreenLock:" + !isScreenOn);
-        return !isScreenOn;
-    }
+		return !isScreenOn;
+	}
 }

@@ -42,7 +42,7 @@ public class Box2dEffectView implements ApplicationListener {
     private List<Body> m_ballBodys = new ArrayList<>();
     private SpriteBatch m_spriteBatch;
     private boolean m_isDebugRenderer;
-
+	private boolean m_candraw = true;
     Texture TESTTEXTURE;
 
     public Box2dEffectView(Context context) {
@@ -78,12 +78,26 @@ public class Box2dEffectView implements ApplicationListener {
 
     }
 
+	public void setCanDraw(boolean candraw) {
+		m_candraw = candraw;
+
+		if (!m_candraw) {
+			_destoryAll();
+		}
+	}
+
     @Override
     public void render() {
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
         synchronized (Box2dEffectView.class) {
+
+	        if (!m_candraw) {
+		        _destoryAll();
+		        return;
+	        }
+
             if (m_ballBodys.size() == 0)
                 return;
             float deltatm = Gdx.app.getGraphics().getDeltaTime();
@@ -120,6 +134,9 @@ public class Box2dEffectView implements ApplicationListener {
 	}
 
     public void addball(boolean isleft) {
+
+	    if (!m_candraw)
+		    return;
 
         _totalLimitsLogic();
 
@@ -198,6 +215,17 @@ public class Box2dEffectView implements ApplicationListener {
         }
 
     }
+
+	private void _destoryAll(){
+
+		synchronized (Box2dEffectView.class){
+			for (int i=0; i<m_ballBodys.size();i++){
+				destoryBody(i);
+				i--;
+			}
+		}
+
+	}
 
     private void _ballUpdatasLogic(float deltatm){
 
