@@ -19,180 +19,21 @@
 			/>
 	</FrameLayout>
 
-	<ScrollView
-		android:id="@+id/scrollv"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:layout_marginBottom="60dp"
-		android:layout_marginTop="20dp"
-		>
-
-		<TextView
-			android:id="@+id/log"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:padding="10dp"
-			android:textColor="@color/cornflowerblue"
-			android:textSize="10dp"
-			/>
-
-	</ScrollView>
 
 
-	<LinearLayout
-		android:id="@+id/lyt_addcontainer"
-		android:layout_width="match_parent"
+
+	<Button
+		android:id="@+id/random"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
 		android:layout_alignParentBottom="true"
-		android:layout_margin="5dp"
-		android:background="@drawable/particledashsharp"
-		android:gravity="center"
-		android:orientation="vertical"
-		android:padding="10dp"
-		>
-
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="5dp"
-			android:layout_marginLeft="10dp"
-			android:text="send star"
-			android:textColor="@color/cornflowerblue"
-			/>
-		<LinearLayout android:layout_width="match_parent"
-		              android:layout_height="wrap_content">
-			<CheckBox
-				android:id="@+id/cb_isdebug"
-				style="@style/CustomCheckboxTheme"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="left|center_vertical"
-				android:layout_margin="6dp"
-				android:layout_weight="1"
-				android:padding="6dp"
-				android:text="Open DebugDraw"
-				android:textColor="@color/word_dark"
-				android:textSize="12dp"
-				/>
-
-			<Button
-				android:id="@+id/random"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="right|center_vertical"
-				android:layout_margin="6dp"
-				android:layout_weight="1"
-				android:background="@drawable/particlestylescrazymodebtnsharp"
-				android:padding="6dp"
-				android:text="Start crazyMode"
-				android:textColor="@color/white"
-				android:textSize="12dp"
-				/>
-		</LinearLayout>
-
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			>
-
-			<Button
-				android:id="@+id/add1"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_margin="6dp"
-				android:layout_weight="1"
-				android:background="@drawable/paticlestylebtnsharp"
-				android:padding="6dp"
-				android:text="send left"
-				android:textColor="@color/word_dark"
-				android:textSize="12dp"
-				/>
-
-			<Button
-				android:id="@+id/add2"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_margin="6dp"
-				android:layout_weight="1"
-				android:background="@drawable/paticlestylebtnsharp"
-				android:padding="6dp"
-				android:text="send right"
-				android:textColor="@color/word_dark"
-				android:textSize="12dp"
-				/>
-
-		</LinearLayout>
-	</LinearLayout>
-
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="140dp"
-		android:layout_above="@id/lyt_addcontainer"
-		android:layout_margin="5dp"
-		android:background="@drawable/interuptdashsharp"
-		android:gravity="center"
-		android:orientation="vertical"
-		android:padding="10dp"
-		>
-
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="5dp"
-			android:layout_marginLeft="10dp"
-			android:text="Interference factor"
-			android:textColor="#63a219"
-			/>
-
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:gravity="center"
-			android:orientation="horizontal"
-			>
-
-			<Button
-				android:id="@+id/btn1"
-				android:layout_width="match_parent"
-				android:layout_height="60dp"
-				android:layout_margin="10dp"
-				android:layout_weight="1"
-				android:background="@drawable/testbtnsharp"
-				android:text="Normal Activity"
-				android:textColor="@color/word_dark"
-				android:textSize="14dp"
-				/>
-
-			<Button
-				android:id="@+id/btn2"
-				android:layout_width="match_parent"
-				android:layout_height="60dp"
-				android:layout_margin="5dp"
-				android:layout_weight="1"
-				android:background="@drawable/testbtnsharp"
-				android:text="DialogStyle Activity"
-				android:textColor="@color/word_dark"
-				android:textSize="14dp"
-				/>
-
-			<Button
-				android:id="@+id/btn3"
-				android:layout_width="match_parent"
-				android:layout_height="60dp"
-				android:layout_margin="10dp"
-				android:layout_weight="1"
-				android:background="@drawable/testbtnsharp"
-				android:text="Dialog"
-				android:textColor="@color/word_dark"
-				android:textSize="14dp"
-				/>
-		</LinearLayout>
-
-	</LinearLayout>
-
-	<alex.com.box2ddemo.testcode.levelgaugeView
-		android:id="@+id/levelgauge"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"/>
+		android:layout_margin="6dp"
+		android:layout_weight="1"
+		android:background="@drawable/particlestylescrazymodebtnsharp"
+		android:padding="6dp"
+		android:text="Start crazyMode"
+		android:textColor="@color/white"
+		android:textSize="12dp"
+	/>
 </RelativeLayout>

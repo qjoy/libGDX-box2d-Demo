@@ -10,6 +10,7 @@ public class BallInfo {
 
 	private float m_runtimes = 0;
 	private float m_aplhascale = 1f;
+	private int m_ColorIndex = 0;
 
 //	private Texture m_ballTexture;
 //
@@ -41,5 +42,13 @@ public class BallInfo {
 
 	public void setAplhascale(float aplhascale) {
 		m_aplhascale = aplhascale;
+	}
+
+	public void setColorIndex(int colorIndex) {
+		m_ColorIndex = colorIndex;
+	}
+
+	public int getColorIndex() {
+		return m_ColorIndex;
 	}
 }

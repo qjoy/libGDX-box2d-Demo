@@ -43,8 +43,7 @@ public class Box2dEffectView implements ApplicationListener {
     private SpriteBatch m_spriteBatch;
     private boolean m_isDebugRenderer;
 	private boolean m_candraw = true;
-    Texture TESTTEXTURE;
-
+    ArrayList<Texture> TESTTEXTURES = new ArrayList<>();
     public Box2dEffectView(Context context) {
         m_context = context;
     }
@@ -56,7 +55,11 @@ public class Box2dEffectView implements ApplicationListener {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
-        TESTTEXTURE = new Texture(Gdx.files.internal("star.png"));
+	    TESTTEXTURES.add( new Texture(Gdx.files.internal("1.png")));
+	    TESTTEXTURES.add( new Texture(Gdx.files.internal("2.png")));
+	    TESTTEXTURES.add( new Texture(Gdx.files.internal("3.png")));
+	    TESTTEXTURES.add( new Texture(Gdx.files.internal("4.png")));
+	    TESTTEXTURES.add( new Texture(Gdx.files.internal("5.png")));
 
         float cameraWidth = w / PXTM;
         float cameraHeight = h / PXTM;
@@ -156,8 +159,10 @@ public class Box2dEffectView implements ApplicationListener {
                 BallBodydef.position.set(new Vector2(camera.viewportWidth/2 - 2f, camera.viewportHeight/2 - 2f) );
             }
 
+	        BallInfo ballinfo = new BallInfo();
+	        ballinfo.setColorIndex((int) (Math.random() * 5.0f) );
             Body BallBody = world.createBody(BallBodydef);
-            BallBody.setUserData(new BallInfo());
+            BallBody.setUserData(ballinfo);
             BallBody.setFixedRotation(false);
             CircleShape shape = new CircleShape();
             shape.setRadius(1f);
@@ -250,10 +255,12 @@ public class Box2dEffectView implements ApplicationListener {
             ballInfo.setRuntimes(curruntm + deltatm);
 
             Vector2 transformVect = Transform.mtp(bd.getPosition().x + 1f, bd.getPosition().y + 1f, new Vector2(2f, 2f), PXTM);
+
+	        Texture tempTexture = TESTTEXTURES.get(ballInfo.getColorIndex());
             //绘制
             m_spriteBatch.begin();
-            m_spriteBatch.setColor(new Color(1,1,1,alphascale));
-            m_spriteBatch.draw(TESTTEXTURE, transformVect.x+(1f-alphascale)*30, transformVect.y+(1f-alphascale)*30, alphascale*60f, alphascale*60f);
+            m_spriteBatch.setColor(new Color(1,1,1,alphascale*0.5f));
+            m_spriteBatch.draw(tempTexture, transformVect.x+(1f-alphascale)*30, transformVect.y+(1f-alphascale)*30, alphascale*60f, alphascale*60f);
             m_spriteBatch.end();
 
         }

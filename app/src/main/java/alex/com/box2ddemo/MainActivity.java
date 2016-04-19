@@ -12,11 +12,8 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.badlogic.gdx.backends.android.AndroidFragmentApplication;
@@ -25,20 +22,14 @@ import com.badoo.mobile.util.WeakHandler;
 import alex.com.box2ddemo.gift2dview.Box2DFragment;
 import alex.com.box2ddemo.gift2dview.Tools.GiftParticleContants;
 import alex.com.box2ddemo.gift2dview.Tools.ScreenParamUtil;
-import alex.com.box2ddemo.testcode.HalfScreenActivity;
-import alex.com.box2ddemo.testcode.levelgaugeView;
-import alex.com.box2ddemo.testcode.NormalActivity;
 import alex.com.box2ddemo.testcode.SpringEffect;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 
 public class MainActivity extends FragmentActivity implements AndroidFragmentApplication.Callbacks{
 
     private Box2DFragment m_box2dFgm;
-    private TextView m_tvLog;
     private WeakHandler m_weakHandler = new WeakHandler();
-    private ScrollView m_scrollv;
     private SystemReceiveBroadCast m_systemreceiveBroadCast;
     private boolean m_bCrazyMode = false;
 
@@ -47,9 +38,6 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
 
 	@Bind(R.id.lyt_container)
 	public FrameLayout m_container;
-
-	@Bind(R.id.levelgauge)
-	public levelgaugeView m_levelgaugeView;
 
 
     @Override
@@ -70,46 +58,7 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
         m_box2dFgm = new Box2DFragment();
 	    getSupportFragmentManager().beginTransaction().add(R.id.lyt_container, m_box2dFgm).commit();
 
-	    showBox2dFgmNormalScreen();
-
-        m_scrollv = (ScrollView) findViewById(R.id.scrollv);
-        m_tvLog = (TextView) findViewById(R.id.log);
-
-        SpringEffect.doEffectSticky(findViewById(R.id.btn1), new Runnable() {
-            @Override
-            public void run() {
-                NormalActivity.launch(MainActivity.this);
-            }
-        });
-
-        SpringEffect.doEffectSticky(findViewById(R.id.btn2), new Runnable() {
-            @Override
-            public void run() {
-                HalfScreenActivity.launch(MainActivity.this);
-            }
-        });
-
-        SpringEffect.doEffectSticky(findViewById(R.id.btn3), new Runnable() {
-            @Override
-            public void run() {
-                dialogTest();
-            }
-        });
-
-        SpringEffect.doEffectSticky(findViewById(R.id.add1), new Runnable() {
-            @Override
-            public void run() {
-                m_box2dFgm.addBall(true);
-            }
-        });
-
-        SpringEffect.doEffectSticky(findViewById(R.id.add2), new Runnable() {
-            @Override
-            public void run() {
-                m_box2dFgm.addBall(false);
-            }
-        });
-
+	    showBox2dFgmFullScreen();
 
         SpringEffect.doEffectSticky(findViewById(R.id.random), new Runnable() {
             @Override
@@ -140,7 +89,6 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
     @Override
     protected void onDestroy() {
         super.onDestroy();
-	    m_levelgaugeView.release();
         unregisterReceiver(m_systemreceiveBroadCast);
         m_weakHandler.removeCallbacks(m_runnableCrazyMode);
         ButterKnife.unbind(this);
@@ -221,24 +169,11 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
         }
     }
 
-    @OnCheckedChanged(R.id.cb_isdebug)
-    public void OnIsDebugCheckedChanged(CompoundButton btn, boolean bchecked){
-        if (btn.getId() == R.id.cb_isdebug){
-            m_box2dFgm.openDebugRenderer(bchecked);
-            btn.setText(bchecked?"Close DebugDraw":"Open DebugDraw");
-        }
-    }
-
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 
-		if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
-			showBox2dFgmFullScreen();
-		}
-		else{
-			showBox2dFgmNormalScreen();
-		}
+		showBox2dFgmFullScreen();
 	}
 
 	private void showBox2dFgmFullScreen(){
@@ -250,7 +185,7 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
 
 	private void showBox2dFgmNormalScreen(){
 		int width = ScreenParamUtil.GetScreenWidthPx(this);
-		int height = width*3/4;
+		int height = ScreenParamUtil.GetScreenHeightDp(this);
 		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)m_container.getLayoutParams();
 		params.width = width;
 		params.height = height;
