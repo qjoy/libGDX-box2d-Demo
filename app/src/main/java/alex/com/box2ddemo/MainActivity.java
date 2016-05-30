@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -33,8 +34,18 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
     private SystemReceiveBroadCast m_systemreceiveBroadCast;
     private boolean m_bCrazyMode = false;
 
+	private int m_giftIndex = 1;
+	private int m_giftCounter = 0;
+
     @Bind(R.id.random)
     public Button m_random;
+
+	@Bind(R.id.countEdit)
+	public EditText m_countEditText;
+
+	@Bind(R.id.countEdit1)
+	public EditText m_countEditText1;
+
 
 	@Bind(R.id.lyt_container)
 	public FrameLayout m_container;
@@ -57,12 +68,11 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
 
         m_box2dFgm = new Box2DFragment();
 	    getSupportFragmentManager().beginTransaction().add(R.id.lyt_container, m_box2dFgm).commit();
-
 	    showBox2dFgmFullScreen();
-
         SpringEffect.doEffectSticky(findViewById(R.id.random), new Runnable() {
             @Override
             public void run() {
+
                 if (m_bCrazyMode == false) {
                     m_weakHandler.postDelayed(m_runnableCrazyMode, 50);
                     m_random.setText("Stop crazyMode");
@@ -74,17 +84,85 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
             }
         });
 
+	    SpringEffect.doEffectSticky(findViewById(R.id.minusBtn), new Runnable() {
+		    @Override
+		    public void run() {
+			    int count = Integer.valueOf(m_countEditText.getText().toString());
+			    if (count==1)
+				    return;
+			    count--;
+			    m_countEditText.setText(count);
+		    }
+	    });
+	    SpringEffect.doEffectSticky(findViewById(R.id.addBtn), new Runnable() {
+		    @Override
+		    public void run() {
+			    int count = Integer.valueOf(m_countEditText.getText().toString());
+			    if (count==147)
+				    return;
+			    count++;
+			    m_countEditText.setText(""+count);
+		    }
+	    });
+
+	    SpringEffect.doEffectSticky(findViewById(R.id.minusBtn1), new Runnable() {
+		    @Override
+		    public void run() {
+			    int count = Integer.valueOf(m_countEditText1.getText().toString());
+			    if (count==1)
+				    return;
+			    count--;
+			    m_countEditText1.setText(count);
+		    }
+	    });
+	    SpringEffect.doEffectSticky(findViewById(R.id.addBtn1), new Runnable() {
+		    @Override
+		    public void run() {
+			    int count = Integer.valueOf(m_countEditText1.getText().toString());
+			    if (count==100)
+				    return;
+			    count++;
+			    m_countEditText1.setText(""+count);
+		    }
+	    });
+
+	    SpringEffect.doEffectSticky(findViewById(R.id.sendBtn), new Runnable() {
+		    @Override
+		    public void run() {
+			    m_giftIndex = Integer.valueOf(m_countEditText.getText().toString());
+			    m_giftCounter  = Integer.valueOf(m_countEditText1.getText().toString());
+
+			    m_weakHandler.postDelayed(m_runnableSend, 50);
+		    }
+	    });
     }
 
     private boolean m_testleft = false;
     private Runnable m_runnableCrazyMode = new Runnable() {
         @Override
         public void run() {
-            m_box2dFgm.addBall(m_testleft);
+            m_box2dFgm.addBall(m_testleft, 15);
             m_testleft = !m_testleft;
             m_weakHandler.postDelayed(m_runnableCrazyMode, 50);
         }
     };
+
+	private boolean m_testleft1 = false;
+	private int counter = 0;
+	private Runnable m_runnableSend = new Runnable() {
+		@Override
+		public void run() {
+			if (counter == m_giftCounter)
+			{
+				counter = 0;
+				return;
+			}
+			counter++;
+			m_box2dFgm.addBall(m_testleft1, m_giftIndex);
+			m_testleft1 = !m_testleft1;
+			m_weakHandler.postDelayed(m_runnableSend, 50);
+		}
+	};
 
     @Override
     protected void onDestroy() {

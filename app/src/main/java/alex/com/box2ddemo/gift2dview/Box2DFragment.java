@@ -88,9 +88,9 @@ public class Box2DFragment extends AndroidFragmentApplication implements InputPr
 		buildGDX();
 	}
 
-	public void addBall(boolean isleft) {
+	public void addBall(boolean isleft, int index) {
 		try {
-			box2dEffectView.addball(isleft);
+			box2dEffectView.addball(isleft, index);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
