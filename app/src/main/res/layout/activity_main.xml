@@ -43,7 +43,7 @@
 		/>
 		<EditText
 			android:id="@+id/countEdit"
-			android:layout_width="80dp"
+			android:layout_width="40dp"
 			android:layout_height="45dp"
 			android:layout_marginLeft="3dp"
 			android:layout_marginRight="3dp"
@@ -93,7 +93,7 @@
 		/>
 		<EditText
 			android:id="@+id/countEdit1"
-			android:layout_width="80dp"
+			android:layout_width="40dp"
 			android:layout_height="45dp"
 			android:layout_marginLeft="3dp"
 			android:layout_marginRight="3dp"
@@ -120,16 +120,32 @@
 	</LinearLayout>
 
 	<Button
-		android:id="@+id/sendBtn"
-		android:layout_width="60dp"
+		android:id="@+id/sendGiftBtn"
+		android:layout_width="70dp"
 		android:layout_height="45dp"
 		android:layout_marginLeft="3dp"
 		android:layout_marginTop="90dp"
 		android:layout_weight="1"
 		android:background="@drawable/paticlestylebtnsharp"
 		android:padding="3dp"
-		android:text="send"
+		android:text="sendGift"
 		android:textColor="@color/white"
+		android:layout_toRightOf="@id/layout2"
+		android:textSize="12dp"
+	/>
+
+	<Button
+		android:id="@+id/sendStarBtn"
+		android:layout_width="70dp"
+		android:layout_height="45dp"
+		android:layout_marginLeft="3dp"
+		android:layout_marginTop="10dp"
+		android:layout_weight="1"
+		android:background="@drawable/paticlestylebtnsharp"
+		android:padding="3dp"
+		android:text="sendStar"
+		android:textColor="@color/white"
+		android:layout_below="@id/layout2"
 		android:layout_toRightOf="@id/layout2"
 		android:textSize="12dp"
 	/>

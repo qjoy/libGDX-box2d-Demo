@@ -10,7 +10,8 @@ public class BallInfo {
 
 	private float m_runtimes = 0;
 	private float m_aplhascale = 1f;
-	private int m_ColorIndex = 0;
+	private int m_ballIndex = 0;
+	private float m_randomScale = 1.0f;
 
 //	private Texture m_ballTexture;
 //
@@ -44,11 +45,19 @@ public class BallInfo {
 		m_aplhascale = aplhascale;
 	}
 
-	public void setColorIndex(int colorIndex) {
-		m_ColorIndex = colorIndex;
+	public void setBallIndex(int ballIndex) {
+		m_ballIndex = ballIndex;
 	}
 
-	public int getColorIndex() {
-		return m_ColorIndex;
+	public int getBallIndex() {
+		return m_ballIndex;
+	}
+
+	public float getRandomScale() {
+		return m_randomScale;
+	}
+
+	public void setRandomScale(float randomScale) {
+		m_randomScale = randomScale;
 	}
 }

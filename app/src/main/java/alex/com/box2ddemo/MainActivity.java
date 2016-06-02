@@ -126,13 +126,20 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
 		    }
 	    });
 
-	    SpringEffect.doEffectSticky(findViewById(R.id.sendBtn), new Runnable() {
+	    SpringEffect.doEffectSticky(findViewById(R.id.sendGiftBtn), new Runnable() {
 		    @Override
 		    public void run() {
 			    m_giftIndex = Integer.valueOf(m_countEditText.getText().toString());
 			    m_giftCounter  = Integer.valueOf(m_countEditText1.getText().toString());
 
-			    m_weakHandler.postDelayed(m_runnableSend, 50);
+			    m_weakHandler.postDelayed(m_runnableSendGift, 20);
+		    }
+	    });
+
+	    SpringEffect.doEffectSticky(findViewById(R.id.sendStarBtn), new Runnable() {
+		    @Override
+		    public void run() {
+			    m_weakHandler.postDelayed(m_runnableSendStar, 50);
 		    }
 	    });
     }
@@ -141,7 +148,7 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
     private Runnable m_runnableCrazyMode = new Runnable() {
         @Override
         public void run() {
-            m_box2dFgm.addBall(m_testleft, 15);
+            m_box2dFgm.addGift(15);
             m_testleft = !m_testleft;
             m_weakHandler.postDelayed(m_runnableCrazyMode, 50);
         }
@@ -149,7 +156,7 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
 
 	private boolean m_testleft1 = false;
 	private int counter = 0;
-	private Runnable m_runnableSend = new Runnable() {
+	private Runnable m_runnableSendGift = new Runnable() {
 		@Override
 		public void run() {
 			if (counter == m_giftCounter)
@@ -158,9 +165,20 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
 				return;
 			}
 			counter++;
-			m_box2dFgm.addBall(m_testleft1, m_giftIndex);
+			m_box2dFgm.addGift(m_giftIndex);
 			m_testleft1 = !m_testleft1;
-			m_weakHandler.postDelayed(m_runnableSend, 50);
+			m_weakHandler.postDelayed(m_runnableSendGift, 50);
+		}
+	};
+
+	private boolean m_testleft2 = false;
+	private Runnable m_runnableSendStar = new Runnable() {
+		@Override
+		public void run() {
+			counter++;
+			m_box2dFgm.addStar(m_testleft2);
+			m_testleft2 = !m_testleft2;
+//			m_weakHandler.postDelayed(m_runnableSendStar, 50);
 		}
 	};
 

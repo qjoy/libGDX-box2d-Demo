@@ -43,7 +43,8 @@ public class Box2dEffectView implements ApplicationListener {
     private SpriteBatch m_spriteBatch;
     private boolean m_isDebugRenderer;
 	private boolean m_candraw = true;
-    ArrayList<Texture> TESTTEXTURES = new ArrayList<>();
+    ArrayList<Texture> m_giftTextures = new ArrayList<>();
+    ArrayList<Texture> m_starTextures = new ArrayList<>();
     public Box2dEffectView(Context context) {
         m_context = context;
     }
@@ -56,7 +57,10 @@ public class Box2dEffectView implements ApplicationListener {
         float h = Gdx.graphics.getHeight();
 
 	    for (int i=1; i<148; i++)
-	        TESTTEXTURES.add( new Texture(Gdx.files.internal("gifts/"+i+".png")));
+	        m_giftTextures.add( new Texture(Gdx.files.internal("gifts/"+i+".png")));
+
+	    m_starTextures.add(new Texture(Gdx.files.internal("star.png")));
+
         float cameraWidth = w / PXTM;
         float cameraHeight = h / PXTM;
         camera = new OrthographicCamera(cameraWidth, cameraHeight);
@@ -64,7 +68,7 @@ public class Box2dEffectView implements ApplicationListener {
 
         m_spriteBatch = new SpriteBatch();
 
-        world = new World(new Vector2(0f, -40f), true);
+        world = new World(new Vector2(0f, -60f), true);
         addground();
         addleftwall();
         addrighttwall();
@@ -102,7 +106,6 @@ public class Box2dEffectView implements ApplicationListener {
             float deltatm = Gdx.app.getGraphics().getDeltaTime();
             world.step(deltatm, 6, 2);
 
-//            Log.d(TAG, "deltatm:" + deltatm);
             _ballUpdatasLogic(deltatm);
 
             if (m_isDebugRenderer)
@@ -132,7 +135,7 @@ public class Box2dEffectView implements ApplicationListener {
 			m_box2dSenserLogic.setIsPortrait(isPortrait);
 	}
 
-    public void addball(boolean isleft, int index) {
+    public void addStar(boolean isleft) {
 
 	    if (!m_candraw)
 		    return;
@@ -146,23 +149,23 @@ public class Box2dEffectView implements ApplicationListener {
 
             float thrownXRandom = (float) Math.random() * 26.0f + 4.0f;
             float thrownYRandom = -( (float) Math.random() * 15.0f + 3.0f );
+	        float yRandomStart = (float) Math.random() * 8f;
             if (isleft) {
                 BallBodydef.linearVelocity.set(thrownXRandom, thrownYRandom);
-                BallBodydef.position.set(new Vector2(-camera.viewportWidth/2 + 2f, camera.viewportHeight/2 - 2f) );
+                BallBodydef.position.set(new Vector2(-camera.viewportWidth/2 + 2f, camera.viewportHeight/2 - yRandomStart) );
 
             } else {
                 BallBodydef.linearVelocity.set(-thrownXRandom, thrownYRandom);
-                BallBodydef.position.set(new Vector2(camera.viewportWidth/2 - 2f, camera.viewportHeight/2 - 2f) );
+                BallBodydef.position.set(new Vector2(camera.viewportWidth/2 - 2f, camera.viewportHeight/2 - yRandomStart) );
             }
 
 	        BallInfo ballinfo = new BallInfo();
-	        ballinfo.setColorIndex(index);
-//	        ballinfo.setColorIndex((int) (Math.random() * 5.0f) );
+	        ballinfo.setBallIndex(1001);
             Body BallBody = world.createBody(BallBodydef);
             BallBody.setUserData(ballinfo);
             BallBody.setFixedRotation(false);
             CircleShape shape = new CircleShape();
-            shape.setRadius(1.5f);
+            shape.setRadius(1.1f);
             FixtureDef BallFixtureDef = new FixtureDef();
             BallFixtureDef.shape = shape;
             BallFixtureDef.density = 1.5f;
@@ -178,7 +181,55 @@ public class Box2dEffectView implements ApplicationListener {
         }
     }
 
-    private void addground(){
+	private boolean m_randomGiftLeft = false;//礼物在屏幕左侧
+	public void addGift(int index) {
+
+		if (!m_candraw)
+			return;
+
+		_totalLimitsLogic();
+
+		synchronized (Box2dEffectView.class) {
+
+			BodyDef BallBodydef = new BodyDef();
+			BallBodydef.type = BodyDef.BodyType.DynamicBody;
+
+			float posXRandom =  (float) Math.random() * (camera.viewportWidth/2 * 5/6);
+			posXRandom = m_randomGiftLeft? posXRandom : -posXRandom;
+			m_randomGiftLeft = !m_randomGiftLeft;
+
+			float thrownXRandomTemp = (int)((float) Math.random() * 10.0f)%2 ==0 ? -1: 1;
+			float thrownXRandom = thrownXRandomTemp*( (float) Math.random() * 5.0f );
+			float thrownYRandom = -( (float) Math.random() * 40.0f );
+			BallBodydef.linearVelocity.set(thrownXRandom, thrownYRandom);
+			BallBodydef.position.set(new Vector2(posXRandom, camera.viewportHeight/2 + 2.5f) );
+
+			float randomScale = (float) Math.random()*0.5f+1f;
+			BallInfo ballinfo = new BallInfo();
+			ballinfo.setBallIndex(index);
+			ballinfo.setRandomScale(randomScale);
+			Body BallBody = world.createBody(BallBodydef);
+			BallBody.setUserData(ballinfo);
+			BallBody.setFixedRotation(false);
+			CircleShape shape = new CircleShape();
+			shape.setRadius(1.1f*randomScale);
+			FixtureDef BallFixtureDef = new FixtureDef();
+			BallFixtureDef.shape = shape;
+			BallFixtureDef.density = 1.5f;
+			BallFixtureDef.friction = 0.3f;
+			BallFixtureDef.restitution = 0.5f; // Make it bounce a little bit
+			BallBody.createFixture(BallFixtureDef);
+			shape.dispose();
+
+			m_ballBodys.add(BallBody);
+
+			if (m_ballBodys.size() == 1)
+				m_box2dSenserLogic.startListener();
+		}
+	}
+
+
+	private void addground(){
         BodyDef groundBodyDef =new BodyDef();
         groundBodyDef.position.set(new Vector2(0, -camera.viewportHeight/2));
         Body groundBody = world.createBody(groundBodyDef);
@@ -253,11 +304,25 @@ public class Box2dEffectView implements ApplicationListener {
 
             Vector2 transformVect = Transform.mtp(bd.getPosition().x + 1f, bd.getPosition().y + 1f, new Vector2(2f, 2f), PXTM);
 
-	        Texture tempTexture = TESTTEXTURES.get(ballInfo.getColorIndex());
+	        int index = ballInfo.getBallIndex();
+	        Texture tempTexture = null;
+	        float widthSize = 30f;
+	        if (index>=0 && index<1000) {
+		        tempTexture = m_giftTextures.get(index);
+		        widthSize = 60f;
+	        }
+	        else {
+		        tempTexture = m_starTextures.get(index - 1001);
+		        widthSize = 35f;
+	        }
+
+	        widthSize = widthSize* ballInfo.getRandomScale();
             //绘制
             m_spriteBatch.begin();
-            m_spriteBatch.setColor(new Color(1,1,1,alphascale*0.7f));
-            m_spriteBatch.draw(tempTexture, transformVect.x+(1f-alphascale)*60, transformVect.y+(1f-alphascale)*60, alphascale*120f, alphascale*120f);
+	        if (tempTexture!= null) {
+		        m_spriteBatch.setColor(new Color(1, 1, 1, alphascale * 0.7f));
+		        m_spriteBatch.draw(tempTexture, transformVect.x + (1f - alphascale) * widthSize, transformVect.y + (1f - alphascale) * widthSize, alphascale * widthSize * 2f, alphascale * widthSize * 2f);
+	        }
             m_spriteBatch.end();
 
         }
