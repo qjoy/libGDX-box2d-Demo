@@ -320,7 +320,7 @@ public class Box2dEffectView implements ApplicationListener {
             //绘制
             m_spriteBatch.begin();
 	        if (tempTexture!= null) {
-		        m_spriteBatch.setColor(new Color(1, 1, 1, alphascale * 0.7f));
+		        m_spriteBatch.setColor(new Color(1, 1, 1, alphascale * 0.6f));
 		        m_spriteBatch.draw(tempTexture, transformVect.x + (1f - alphascale) * widthSize, transformVect.y + (1f - alphascale) * widthSize, alphascale * widthSize * 2f, alphascale * widthSize * 2f);
 	        }
             m_spriteBatch.end();
