@@ -176,7 +176,7 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
 		@Override
 		public void run() {
 			counter++;
-			m_box2dFgm.addStar(m_testleft2);
+			m_box2dFgm.addStar(m_testleft2, true);
 			m_testleft2 = !m_testleft2;
 //			m_weakHandler.postDelayed(m_runnableSendStar, 50);
 		}

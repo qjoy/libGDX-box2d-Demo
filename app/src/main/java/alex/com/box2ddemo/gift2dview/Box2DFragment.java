@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceView;
@@ -36,6 +37,9 @@ import alex.com.box2ddemo.gift2dview.Tools.GiftParticleContants;
 public class Box2DFragment extends AndroidFragmentApplication implements InputProcessor {
 
 	private static final String TAG = "Box2DFragment";
+
+	public static float s_scale = 1.0f;
+
 	private View m_viewRooter = null;
 	//粒子效果UI容器层
 	private LinearLayout mContainer;
@@ -65,6 +69,9 @@ public class Box2DFragment extends AndroidFragmentApplication implements InputPr
 		m_viewRooter = inflater.inflate(R.layout.lf_layout_giftparticle, null);
 		pm = (PowerManager) getActivity().getSystemService(Context.POWER_SERVICE);
 
+		DisplayMetrics dm = getActivity().getApplicationContext().getResources().getDisplayMetrics();
+		s_scale = dm.density/4.0f;
+
 		return m_viewRooter;
 	}
 
@@ -88,9 +95,9 @@ public class Box2DFragment extends AndroidFragmentApplication implements InputPr
 		buildGDX();
 	}
 
-	public void addStar(boolean isleft) {
+	public void addStar(boolean isLeft, boolean isSelf) {
 		try {
-			box2dEffectView.addStar(isleft);
+			box2dEffectView.addStar(isLeft, isSelf);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

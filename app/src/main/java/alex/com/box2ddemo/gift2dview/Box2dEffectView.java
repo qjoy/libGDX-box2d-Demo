@@ -53,6 +53,7 @@ public class Box2dEffectView implements ApplicationListener {
 	public void release(){m_box2dSenserLogic.release();}
     @Override
     public void create() {
+
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
@@ -60,6 +61,7 @@ public class Box2dEffectView implements ApplicationListener {
 	        m_giftTextures.add( new Texture(Gdx.files.internal("gifts/"+i+".png")));
 
 	    m_starTextures.add(new Texture(Gdx.files.internal("star.png")));
+	    m_starTextures.add(new Texture(Gdx.files.internal("star_self.png")));
 
         float cameraWidth = w / PXTM;
         float cameraHeight = h / PXTM;
@@ -135,7 +137,7 @@ public class Box2dEffectView implements ApplicationListener {
 			m_box2dSenserLogic.setIsPortrait(isPortrait);
 	}
 
-    public void addStar(boolean isleft) {
+    public void addStar(boolean isLeft, boolean isSelf) {
 
 	    if (!m_candraw)
 		    return;
@@ -150,7 +152,7 @@ public class Box2dEffectView implements ApplicationListener {
             float thrownXRandom = (float) Math.random() * 26.0f + 4.0f;
             float thrownYRandom = -( (float) Math.random() * 15.0f + 3.0f );
 	        float yRandomStart = (float) Math.random() * 8f;
-            if (isleft) {
+            if (isLeft) {
                 BallBodydef.linearVelocity.set(thrownXRandom, thrownYRandom);
                 BallBodydef.position.set(new Vector2(-camera.viewportWidth/2 + 2f, camera.viewportHeight/2 - yRandomStart) );
 
@@ -160,7 +162,7 @@ public class Box2dEffectView implements ApplicationListener {
             }
 
 	        BallInfo ballinfo = new BallInfo();
-	        ballinfo.setBallIndex(1001);
+	        ballinfo.setBallIndex(isSelf?1002:1001);
             Body BallBody = world.createBody(BallBodydef);
             BallBody.setUserData(ballinfo);
             BallBody.setFixedRotation(false);
@@ -316,7 +318,7 @@ public class Box2dEffectView implements ApplicationListener {
 		        widthSize = 35f;
 	        }
 
-	        widthSize = widthSize* ballInfo.getRandomScale();
+	        widthSize = widthSize* ballInfo.getRandomScale()* Box2DFragment.s_scale;
             //绘制
             m_spriteBatch.begin();
 	        if (tempTexture!= null) {
