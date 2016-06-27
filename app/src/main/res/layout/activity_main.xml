@@ -2,7 +2,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/aliceblue"
+                android:background="@color/word_dark"
                 tools:context=".MainActivity">
 
 	<FrameLayout
@@ -11,12 +11,7 @@
 		android:layout_height="match_parent"
 		android:orientation="horizontal"
 	>
-		<ImageView
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:scaleType="centerCrop"
-			android:src="@mipmap/bkg"
-		/>
+
 	</FrameLayout>
 
 
@@ -51,6 +46,7 @@
 			android:maxEms="147"
 			android:minEms="1"
 			android:numeric="integer"
+			android:textColor="@color/white"
 			android:text="1"
 		/>
 		<Button
@@ -101,6 +97,7 @@
 			android:maxEms="10000"
 			android:minEms="1"
 			android:numeric="integer"
+			android:textColor="@color/white"
 			android:text="1"
 		/>
 		<Button
